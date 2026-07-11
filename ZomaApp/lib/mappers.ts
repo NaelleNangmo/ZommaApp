@@ -86,6 +86,7 @@ export function mapLivreur(row: any): Livreur {
     depotId: row.depot_id ?? row.depotId ?? '',
     isActive: row.is_active ?? row.isActive ?? true,
     createdAt: new Date(row.created_at ?? row.createdAt),
+    depotName: row.depot_name ?? row.depotName ?? '',
   };
 }
 

@@ -92,6 +92,8 @@ export interface Livreur {
   depotId: string;
   isActive: boolean;
   createdAt: Date;
+  // Joined field from backend
+  depotName?: string;
 }
 
 // Export empty arrays as fallback - data will be loaded from services

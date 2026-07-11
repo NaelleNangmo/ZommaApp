@@ -16,8 +16,6 @@ import { mapDepot } from '@/lib/mappers';
 import { DataService } from '@/lib/services/data-service';
 import { useBackend } from '@/contexts/backend-context';
 
-// ... (mapUser défini plus bas dans le fichier)
-
 interface AppUser {
   id: string; name: string; email: string;
   role: 'admin_global' | 'admin_depot' | 'vendeur' | 'livreur';
