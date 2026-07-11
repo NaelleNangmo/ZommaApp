@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "productId": "1",
+    "depotId": "1",
+    "vendeurId": "3",
+    "quantity": 24,
+    "unitPrice": 650,
+    "totalAmount": 15600,
+    "createdAt": "2024-01-20T08:30:00.000Z"
+  },
+  {
+    "id": "2",
+    "productId": "2",
+    "depotId": "1",
+    "vendeurId": "3",
+    "quantity": 48,
+    "unitPrice": 300,
+    "totalAmount": 14400,
+    "createdAt": "2024-01-20T10:15:00.000Z"
+  },
+  {
+    "id": "3",
+    "productId": "3",
+    "depotId": "1",
+    "vendeurId": "3",
+    "quantity": 12,
+    "unitPrice": 450,
+    "totalAmount": 5400,
+    "createdAt": "2024-01-19T14:20:00.000Z"
+  },
+  {
+    "id": "4",
+    "productId": "1",
+    "depotId": "2",
+    "vendeurId": "5",
+    "quantity": 36,
+    "unitPrice": 650,
+    "totalAmount": 23400,
+    "createdAt": "2024-01-18T16:45:00.000Z"
+  },
+  {
+    "id": "5",
+    "productId": "4",
+    "depotId": "1",
+    "vendeurId": "3",
+    "quantity": 18,
+    "unitPrice": 700,
+    "totalAmount": 12600,
+    "createdAt": "2024-01-17T11:30:00.000Z"
+  }
+]

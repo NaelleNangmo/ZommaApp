@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "name": "SABC",
+    "contact": "Jean Dupont",
+    "phone": "+237 222 111 222",
+    "email": "contact@sabc.cm",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "name": "Sources du Pays",
+    "contact": "Marie Nguyen",
+    "phone": "+237 233 333 444",
+    "email": "info@sourcesdupays.cm",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "name": "Brasseries du Cameroun",
+    "contact": "Paul Mbarga",
+    "phone": "+237 244 555 666",
+    "email": "commercial@bc.cm",
+    "isActive": true,
+    "createdAt": "2024-01-10T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "name": "Coca-Cola Cameroun",
+    "contact": "Sophie Ewondo",
+    "phone": "+237 255 777 888",
+    "email": "ventes@coca-cola.cm",
+    "isActive": true,
+    "createdAt": "2024-01-20T00:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "name": "Guinness Cameroun",
+    "contact": "André Fouda",
+    "phone": "+237 266 999 000",
+    "email": "distribution@guinness.cm",
+    "isActive": false,
+    "createdAt": "2024-02-01T00:00:00.000Z"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1",
+    "name": "Castel Beer 65cl",
+    "fournisseurId": "1",
+    "unit": "bouteille",
+    "prixAchat": 450,
+    "prixVente": 650,
+    "seuilStock": 50,
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "name": "Eau Sources du Pays 1.5L",
+    "fournisseurId": "2",
+    "unit": "bouteille",
+    "prixAchat": 200,
+    "prixVente": 300,
+    "seuilStock": 100,
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "name": "Coca Cola 50cl",
+    "fournisseurId": "4",
+    "unit": "bouteille",
+    "prixAchat": 300,
+    "prixVente": 450,
+    "seuilStock": 75,
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "name": "33 Export 65cl",
+    "fournisseurId": "3",
+    "unit": "bouteille",
+    "prixAchat": 500,
+    "prixVente": 700,
+    "seuilStock": 40,
+    "isActive": true,
+    "createdAt": "2024-01-05T00:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "name": "Guinness 50cl",
+    "fournisseurId": "5",
+    "unit": "bouteille",
+    "prixAchat": 600,
+    "prixVente": 850,
+    "seuilStock": 30,
+    "isActive": false,
+    "createdAt": "2024-01-10T00:00:00.000Z"
+  }
+]

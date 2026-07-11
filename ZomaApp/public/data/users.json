@@ -1,0 +1,46 @@
+[
+  {
+    "id": "1",
+    "email": "admin@zoma.com",
+    "name": "Admin Global",
+    "role": "admin_global",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "email": "depot1@zoma.com",
+    "name": "Admin Dépôt Yaoundé",
+    "role": "admin_depot",
+    "depotId": "1",
+    "isActive": true,
+    "createdAt": "2024-01-15T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "email": "vendeur@zoma.com",
+    "name": "Vendeur Principal",
+    "role": "vendeur",
+    "depotId": "1",
+    "isActive": true,
+    "createdAt": "2024-02-01T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "email": "livreur@zoma.com",
+    "name": "Livreur Mobile",
+    "role": "livreur",
+    "depotId": "1",
+    "isActive": true,
+    "createdAt": "2024-02-15T00:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "email": "depot2@zoma.com",
+    "name": "Admin Dépôt Douala",
+    "role": "admin_depot",
+    "depotId": "2",
+    "isActive": true,
+    "createdAt": "2024-03-01T00:00:00.000Z"
+  }
+]

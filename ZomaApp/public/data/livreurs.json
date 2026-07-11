@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "name": "Paul Mbarga",
+    "phone": "+237 677 123 456",
+    "email": "paul.mbarga@zoma.com",
+    "depotId": "1",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "name": "Sophie Ewondo",
+    "phone": "+237 655 987 654",
+    "email": "sophie.ewondo@zoma.com",
+    "depotId": "1",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "name": "André Fouda",
+    "phone": "+237 699 111 222",
+    "email": "andre.fouda@zoma.com",
+    "depotId": "2",
+    "isActive": true,
+    "createdAt": "2024-01-10T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "name": "Marie Nkomo",
+    "phone": "+237 677 333 444",
+    "email": "marie.nkomo@zoma.com",
+    "depotId": "2",
+    "isActive": true,
+    "createdAt": "2024-01-15T00:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "name": "Jean Talla",
+    "phone": "+237 655 555 666",
+    "email": "jean.talla@zoma.com",
+    "depotId": "3",
+    "isActive": false,
+    "createdAt": "2024-02-01T00:00:00.000Z"
+  }
+]

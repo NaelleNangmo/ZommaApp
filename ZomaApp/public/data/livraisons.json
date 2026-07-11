@@ -1,0 +1,69 @@
+[
+  {
+    "id": "1",
+    "fournisseurId": "1",
+    "depotId": "1",
+    "livreurId": "1",
+    "status": "pending",
+    "scheduledDate": "2024-01-25T09:00:00.000Z",
+    "items": [
+      { "productId": "1", "quantity": 100, "unitPrice": 450 },
+      { "productId": "3", "quantity": 50, "unitPrice": 300 }
+    ],
+    "totalAmount": 60000,
+    "createdAt": "2024-01-20T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "fournisseurId": "2",
+    "depotId": "1",
+    "livreurId": "2",
+    "status": "completed",
+    "scheduledDate": "2024-01-22T10:30:00.000Z",
+    "completedAt": "2024-01-22T11:15:00.000Z",
+    "items": [
+      { "productId": "2", "quantity": 200, "unitPrice": 200 }
+    ],
+    "totalAmount": 40000,
+    "createdAt": "2024-01-20T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "fournisseurId": "3",
+    "depotId": "2",
+    "livreurId": "3",
+    "status": "in_progress",
+    "scheduledDate": "2024-01-24T14:00:00.000Z",
+    "items": [
+      { "productId": "4", "quantity": 75, "unitPrice": 500 }
+    ],
+    "totalAmount": 37500,
+    "createdAt": "2024-01-21T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "fournisseurId": "4",
+    "depotId": "1",
+    "livreurId": "1",
+    "status": "pending",
+    "scheduledDate": "2024-01-26T08:00:00.000Z",
+    "items": [
+      { "productId": "3", "quantity": 120, "unitPrice": 300 }
+    ],
+    "totalAmount": 36000,
+    "createdAt": "2024-01-22T00:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "fournisseurId": "1",
+    "depotId": "3",
+    "livreurId": "5",
+    "status": "cancelled",
+    "scheduledDate": "2024-01-23T16:00:00.000Z",
+    "items": [
+      { "productId": "1", "quantity": 60, "unitPrice": 450 }
+    ],
+    "totalAmount": 27000,
+    "createdAt": "2024-01-19T00:00:00.000Z"
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "name": "Dépôt Central Yaoundé",
+    "address": "123 Rue de la Réunification, Yaoundé",
+    "phone": "+237 222 123 456",
+    "adminId": "2",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "name": "Dépôt Douala",
+    "address": "456 Boulevard de la Liberté, Douala",
+    "phone": "+237 233 654 321",
+    "adminId": "3",
+    "isActive": true,
+    "createdAt": "2024-01-15T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "name": "Dépôt Bafoussam",
+    "address": "789 Avenue de l'Indépendance, Bafoussam",
+    "phone": "+237 244 789 012",
+    "adminId": "4",
+    "isActive": true,
+    "createdAt": "2024-02-01T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "name": "Dépôt Garoua",
+    "address": "321 Rue du Commerce, Garoua",
+    "phone": "+237 255 345 678",
+    "adminId": "5",
+    "isActive": false,
+    "createdAt": "2024-02-15T00:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "name": "Dépôt Bamenda",
+    "address": "654 Commercial Avenue, Bamenda",
+    "phone": "+237 266 901 234",
+    "adminId": "6",
+    "isActive": true,
+    "createdAt": "2024-03-01T00:00:00.000Z"
+  }
+]
