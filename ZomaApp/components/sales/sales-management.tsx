@@ -15,6 +15,7 @@ import { mapSale, mapProduct, mapDepot } from '@/lib/mappers';
 import { DataService } from '@/lib/services/data-service';
 import { useAuth } from '@/contexts/auth-context';
 import { useBackend } from '@/contexts/backend-context';
+import { DataPagination, usePagination } from '@/components/ui/data-pagination';
 
 export const SalesManagement: React.FC = () => {
   const { user } = useAuth();
@@ -89,6 +90,8 @@ export const SalesManagement: React.FC = () => {
     }
     return matchesSearch && matchesProduct && matchesPeriod;
   });
+
+  const { slice: pageSales, paginationProps } = usePagination(filteredSales, 15);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -252,9 +255,9 @@ export const SalesManagement: React.FC = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredSales.length === 0 ? (
+              {pageSales.length === 0 ? (
                 <TableRow><TableCell colSpan={isAdminGlobal ? 6 : 5} className="text-center text-gray-500 py-8">Aucune vente trouvée</TableCell></TableRow>
-              ) : filteredSales.map(sale => (
+              ) : pageSales.map(sale => (
                 <TableRow key={sale.id}>
                   <TableCell>
                     <div className="flex items-center gap-2">
@@ -276,6 +279,7 @@ export const SalesManagement: React.FC = () => {
               ))}
             </TableBody>
           </Table>
+          <DataPagination {...paginationProps} />
         </CardContent>
       </Card>
     </div>

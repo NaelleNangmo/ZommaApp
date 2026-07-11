@@ -15,6 +15,7 @@ import { Product, Fournisseur } from '@/lib/mock-data';
 import { mapProduct, mapFournisseur } from '@/lib/mappers';
 import { DataService } from '@/lib/services/data-service';
 import { useBackend } from '@/contexts/backend-context';
+import { DataPagination, usePagination } from '@/components/ui/data-pagination';
 
 export const ProductManagement: React.FC = () => {
   const { backendReady } = useBackend();
@@ -62,6 +63,8 @@ export const ProductManagement: React.FC = () => {
     const matchesFournisseur = selectedFournisseur === 'all' || product.fournisseurId === selectedFournisseur;
     return matchesSearch && matchesFournisseur;
   });
+
+  const { slice: pageProducts, paginationProps } = usePagination(filteredProducts, 10);
 
   const resetForm = () => {
     setFormData({ name: '', fournisseurId: '', unit: '', prixAchat: '', prixVente: '', seuilStock: '' });
@@ -247,12 +250,12 @@ export const ProductManagement: React.FC = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredProducts.length === 0 ? (
+              {pageProducts.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={8} className="text-center text-gray-500 py-8">Aucun produit trouvé</TableCell>
                 </TableRow>
               ) : (
-                filteredProducts.map((product) => (
+                pageProducts.map((product) => (
                   <TableRow key={product.id}>
                     <TableCell className="font-medium">{product.name}</TableCell>
                     <TableCell>{getFournisseurName(product.fournisseurId)}</TableCell>
@@ -280,6 +283,7 @@ export const ProductManagement: React.FC = () => {
               )}
             </TableBody>
           </Table>
+          <DataPagination {...paginationProps} />
         </CardContent>
       </Card>
     </div>

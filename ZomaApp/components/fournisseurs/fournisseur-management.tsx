@@ -14,6 +14,7 @@ import { Fournisseur } from '@/lib/mock-data';
 import { mapFournisseur } from '@/lib/mappers';
 import { DataService } from '@/lib/services/data-service';
 import { useBackend } from '@/contexts/backend-context';
+import { DataPagination, usePagination } from '@/components/ui/data-pagination';
 
 export const FournisseurManagement: React.FC = () => {
   const { backendReady } = useBackend();
@@ -51,6 +52,8 @@ export const FournisseurManagement: React.FC = () => {
     f.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     f.contact.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const { slice: pageFournisseurs, paginationProps } = usePagination(filteredFournisseurs, 10);
 
   const resetForm = () => {
     setFormData({ name: '', contact: '', phone: '', email: '' });
@@ -181,12 +184,12 @@ export const FournisseurManagement: React.FC = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredFournisseurs.length === 0 ? (
+              {pageFournisseurs.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center text-gray-500 py-8">Aucun fournisseur trouvé</TableCell>
                 </TableRow>
               ) : (
-                filteredFournisseurs.map((f) => (
+                pageFournisseurs.map((f) => (
                   <TableRow key={f.id}>
                     <TableCell className="font-medium">
                       <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-blue-500" />{f.name}</div>
@@ -208,6 +211,7 @@ export const FournisseurManagement: React.FC = () => {
               )}
             </TableBody>
           </Table>
+          <DataPagination {...paginationProps} />
         </CardContent>
       </Card>
     </div>

@@ -15,6 +15,7 @@ import { Depot } from '@/lib/mock-data';
 import { mapDepot } from '@/lib/mappers';
 import { DataService } from '@/lib/services/data-service';
 import { useBackend } from '@/contexts/backend-context';
+import { DataPagination, usePagination } from '@/components/ui/data-pagination';
 
 interface AppUser {
   id: string; name: string; email: string;
@@ -115,6 +116,8 @@ export const UserManagement: React.FC = () => {
     const mr = selectedRole === 'all' || u.role === selectedRole;
     return ms && mr;
   });
+
+  const { slice: pageUsers, paginationProps } = usePagination(filtered, 10);
 
   if (loading) return (
     <div className="flex items-center justify-center h-64">
@@ -231,9 +234,9 @@ export const UserManagement: React.FC = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.length === 0 ? (
+              {pageUsers.length === 0 ? (
                 <TableRow><TableCell colSpan={7} className="text-center text-gray-500 py-8">Aucun utilisateur trouvé</TableCell></TableRow>
-              ) : filtered.map(u => (
+              ) : pageUsers.map(u => (
                 <TableRow key={u.id}>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2"><Users className="h-4 w-4 text-orange-500" />{u.name}</div>
@@ -253,6 +256,7 @@ export const UserManagement: React.FC = () => {
               ))}
             </TableBody>
           </Table>
+          <DataPagination {...paginationProps} />
         </CardContent>
       </Card>
     </div>

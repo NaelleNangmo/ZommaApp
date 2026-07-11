@@ -14,6 +14,7 @@ import { mapSale, mapStock, mapLivraison, mapDepot, mapProduct } from '@/lib/map
 import { DataService } from '@/lib/services/data-service';
 import { useAuth } from '@/contexts/auth-context';
 import { useBackend } from '@/contexts/backend-context';
+import { DataPagination, usePagination } from '@/components/ui/data-pagination';
 
 export const ReportManagement: React.FC = () => {
   const { user } = useAuth();
@@ -73,11 +74,16 @@ export const ReportManagement: React.FC = () => {
     });
   };
 
-  const salesData    = applyDateFilter(applyDepotFilter(sales));
-  const stockData    = applyDepotFilter(stocks);
+  const salesData     = applyDateFilter(applyDepotFilter(sales));
+  const stockData     = applyDepotFilter(stocks);
   const livraisonData = applyDateFilter(applyDepotFilter(
     livraisons.map(l => ({ ...l, createdAt: l.scheduledDate }))
   ));
+
+  // ─── Pagination par type ───────────────────────────────────────────────────
+  const { slice: pageSales,     paginationProps: salesPag }     = usePagination(salesData,     20);
+  const { slice: pageStocks,    paginationProps: stockPag }     = usePagination(stockData,     15);
+  const { slice: pageLivr,      paginationProps: livrPag }      = usePagination(livraisonData, 15);
 
   // ─── KPIs sommaire ────────────────────────────────────────────────────────
   const totalRevenu   = salesData.reduce((s, x) => s + x.totalAmount, 0);
@@ -298,9 +304,9 @@ export const ReportManagement: React.FC = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {salesData.length === 0 ? (
+                {pageSales.length === 0 ? (
                   <TableRow><TableCell colSpan={6} className="text-center text-gray-500 py-8">Aucune vente sur la période</TableCell></TableRow>
-                ) : salesData.map(s => (
+                ) : pageSales.map(s => (
                   <TableRow key={s.id}>
                     <TableCell className="text-sm">{s.createdAt.toLocaleDateString('fr-FR')}</TableCell>
                     <TableCell className="font-medium">{s.productName ?? s.productId}</TableCell>
@@ -312,8 +318,9 @@ export const ReportManagement: React.FC = () => {
                 ))}
               </TableBody>
             </Table>
+            <DataPagination {...salesPag} />
             {salesData.length > 0 && (
-              <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg flex justify-end gap-8">
+              <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg flex justify-end gap-8">
                 <div className="text-right">
                   <p className="text-sm text-gray-500">Total quantité</p>
                   <p className="font-bold">{totalQty.toLocaleString()} unités</p>
@@ -346,9 +353,9 @@ export const ReportManagement: React.FC = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {stockData.length === 0 ? (
+                {pageStocks.length === 0 ? (
                   <TableRow><TableCell colSpan={6} className="text-center text-gray-500 py-8">Aucun stock</TableCell></TableRow>
-                ) : stockData.map(s => {
+                ) : pageStocks.map(s => {
                   const isLow = s.quantity <= (s.seuilStock ?? 0);
                   const val = s.quantity * (s.prixAchat ?? 0);
                   return (
@@ -375,8 +382,9 @@ export const ReportManagement: React.FC = () => {
                 })}
               </TableBody>
             </Table>
+            <DataPagination {...stockPag} />
             {stockData.length > 0 && (
-              <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg flex justify-end">
+              <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg flex justify-end">
                 <div className="text-right">
                   <p className="text-sm text-gray-500">Valeur totale du stock</p>
                   <p className="font-bold text-orange-700">{totalStockVal.toLocaleString()} FCFA</p>
@@ -404,9 +412,9 @@ export const ReportManagement: React.FC = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {livraisonData.length === 0 ? (
+                {pageLivr.length === 0 ? (
                   <TableRow><TableCell colSpan={6} className="text-center text-gray-500 py-8">Aucune livraison</TableCell></TableRow>
-                ) : livraisonData.map(l => (
+                ) : pageLivr.map(l => (
                   <TableRow key={l.id}>
                     <TableCell className="text-sm">{l.scheduledDate.toLocaleDateString('fr-FR')}</TableCell>
                     <TableCell className="font-medium">{(l as any).fournisseurName ?? l.fournisseurId}</TableCell>
@@ -420,6 +428,7 @@ export const ReportManagement: React.FC = () => {
                 ))}
               </TableBody>
             </Table>
+            <DataPagination {...livrPag} />
             {livraisonData.length > 0 && (
               <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg flex justify-between">
                 <div className="flex gap-6 text-sm">

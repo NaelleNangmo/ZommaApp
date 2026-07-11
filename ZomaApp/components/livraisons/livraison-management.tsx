@@ -16,6 +16,7 @@ import { mapLivraison, mapFournisseur, mapLivreur, mapDepot, mapProduct } from '
 import { DataService } from '@/lib/services/data-service';
 import { useAuth } from '@/contexts/auth-context';
 import { useBackend } from '@/contexts/backend-context';
+import { DataPagination, usePagination } from '@/components/ui/data-pagination';
 
 export const LivraisonManagement: React.FC = () => {
   const { user } = useAuth();
@@ -153,6 +154,8 @@ export const LivraisonManagement: React.FC = () => {
     const mst = selectedStatus === 'all' || l.status === selectedStatus;
     return ms && mst;
   });
+
+  const { slice: pageLivraisons, paginationProps } = usePagination(filtered, 10);
 
   const statusBadge = (s: string) => {
     const map: Record<string, { label: string; variant: 'default'|'secondary'|'destructive'|'outline' }> = {
@@ -353,9 +356,9 @@ export const LivraisonManagement: React.FC = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.length === 0 ? (
+              {pageLivraisons.length === 0 ? (
                 <TableRow><TableCell colSpan={isAdminGlobal ? 7 : 6} className="text-center text-gray-500 py-8">Aucune livraison trouvée</TableCell></TableRow>
-              ) : filtered.map(l => (
+              ) : pageLivraisons.map(l => (
                 <TableRow key={l.id}>
                   <TableCell className="font-medium">{(l as any).fournisseurName ?? l.fournisseurId}</TableCell>
                   <TableCell>{(l as any).livreurName ?? l.livreurId}</TableCell>
@@ -370,20 +373,17 @@ export const LivraisonManagement: React.FC = () => {
                   <TableCell>{statusBadge(l.status)}</TableCell>
                   <TableCell>
                     {l.status === 'pending' && (
-                      <Button variant="outline" size="sm" onClick={() => handleStatusChange(l, 'in_progress')}>
-                        Démarrer
-                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleStatusChange(l, 'in_progress')}>Démarrer</Button>
                     )}
                     {l.status === 'in_progress' && (
-                      <Button variant="outline" size="sm" onClick={() => handleStatusChange(l, 'completed')}>
-                        Terminer
-                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleStatusChange(l, 'completed')}>Terminer</Button>
                     )}
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
+          <DataPagination {...paginationProps} />
         </CardContent>
       </Card>
     </div>

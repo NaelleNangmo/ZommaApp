@@ -15,6 +15,7 @@ import { Livreur, Depot } from '@/lib/mock-data';
 import { mapLivreur, mapDepot } from '@/lib/mappers';
 import { DataService } from '@/lib/services/data-service';
 import { useBackend } from '@/contexts/backend-context';
+import { DataPagination, usePagination } from '@/components/ui/data-pagination';
 
 export const LivreurManagement: React.FC = () => {
   const { backendReady } = useBackend();
@@ -144,6 +145,8 @@ export const LivreurManagement: React.FC = () => {
     const matchDepot = selectedDepot === 'all' || l.depotId === selectedDepot;
     return matchSearch && matchDepot;
   });
+
+  const { slice: pageItems, paginationProps } = usePagination(filtered, 10);
 
   const activeCount   = livreurs.filter(l => l.isActive).length;
   const inactiveCount = livreurs.filter(l => !l.isActive).length;
@@ -331,16 +334,14 @@ export const LivreurManagement: React.FC = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.length === 0 ? (
+              {pageItems.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center text-gray-500 py-12">
-                    {livreurs.length === 0
-                      ? 'Aucun livreur enregistré'
-                      : 'Aucun livreur ne correspond aux filtres'}
+                    {livreurs.length === 0 ? 'Aucun livreur enregistré' : 'Aucun livreur ne correspond aux filtres'}
                   </TableCell>
                 </TableRow>
               ) : (
-                filtered.map(l => (
+                pageItems.map(l => (
                   <TableRow key={l.id}>
                     <TableCell>
                       <div className="flex items-center gap-2">
@@ -401,6 +402,7 @@ export const LivreurManagement: React.FC = () => {
               )}
             </TableBody>
           </Table>
+          <DataPagination {...paginationProps} />
         </CardContent>
       </Card>
     </div>

@@ -14,6 +14,7 @@ import { mapStock, mapDepot } from '@/lib/mappers';
 import { DataService } from '@/lib/services/data-service';
 import { useAuth } from '@/contexts/auth-context';
 import { useBackend } from '@/contexts/backend-context';
+import { DataPagination, usePagination } from '@/components/ui/data-pagination';
 
 export const StockManagement: React.FC = () => {
   const { user } = useAuth();
@@ -87,6 +88,8 @@ export const StockManagement: React.FC = () => {
   const lowStockCount = filteredStocks.filter(s => getStockStatus(s) === 'low').length;
   const outOfStockCount = filteredStocks.filter(s => getStockStatus(s) === 'out').length;
   const totalValue = filteredStocks.reduce((sum, s) => sum + s.quantity * (s.prixAchat ?? 0), 0);
+
+  const { slice: pageStocks, paginationProps } = usePagination(filteredStocks, 10);
 
   if (loading) {
     return (
@@ -224,14 +227,14 @@ export const StockManagement: React.FC = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredStocks.length === 0 ? (
+              {pageStocks.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={isAdminGlobal ? 7 : 6} className="text-center text-gray-500 py-8">
                     Aucun stock trouvé
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredStocks.map((stock) => {
+                pageStocks.map((stock) => {
                   const status = getStockStatus(stock);
                   const value = stock.quantity * (stock.prixAchat ?? 0);
                   return (
@@ -251,11 +254,7 @@ export const StockManagement: React.FC = () => {
                         </TableCell>
                       )}
                       <TableCell>
-                        <span className={`font-medium ${
-                          status === 'out' ? 'text-red-600' :
-                          status === 'low' ? 'text-orange-600' :
-                          'text-green-600'
-                        }`}>
+                        <span className={`font-medium ${status === 'out' ? 'text-red-600' : status === 'low' ? 'text-orange-600' : 'text-green-600'}`}>
                           {stock.quantity} {stock.unit}
                         </span>
                       </TableCell>
@@ -269,6 +268,7 @@ export const StockManagement: React.FC = () => {
               )}
             </TableBody>
           </Table>
+          <DataPagination {...paginationProps} />
         </CardContent>
       </Card>
     </div>
