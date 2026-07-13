@@ -24,34 +24,48 @@ router.get('/', async (req, res) => {
 // Create new livraison
 router.post('/', async (req, res) => {
   const client = await pool.connect();
-  
   try {
     await client.query('BEGIN');
-    
     const { fournisseurId, depotId, livreurId, scheduledDate, items, totalAmount } = req.body;
-    
-    // Insert livraison
+
+    if (!fournisseurId || !depotId || !livreurId || !scheduledDate) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'Champs obligatoires manquants (fournisseurId, depotId, livreurId, scheduledDate)' });
+    }
+
+    // Normaliser items: peut etre un tableau ou un objet {0:{...}, 1:{...}}
+    let itemsArray = [];
+    if (Array.isArray(items)) {
+      itemsArray = items;
+    } else if (items && typeof items === 'object') {
+      itemsArray = Object.values(items);
+    }
+
+    if (itemsArray.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'Au moins un produit est requis' });
+    }
+
     const livraisonResult = await client.query(
       'INSERT INTO livraisons (fournisseur_id, depot_id, livreur_id, scheduled_date, total_amount) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [fournisseurId, depotId, livreurId, scheduledDate, totalAmount]
+      [fournisseurId, depotId, livreurId, scheduledDate, totalAmount || 0]
     );
-    
     const livraisonId = livraisonResult.rows[0].id;
-    
-    // Insert livraison items
-    for (const item of items) {
+
+    for (const item of itemsArray) {
+      if (!item.productId || !item.quantity || !item.unitPrice) continue;
       await client.query(
         'INSERT INTO livraison_items (livraison_id, product_id, quantity, unit_price) VALUES ($1, $2, $3, $4)',
         [livraisonId, item.productId, item.quantity, item.unitPrice]
       );
     }
-    
+
     await client.query('COMMIT');
     res.status(201).json(livraisonResult.rows[0]);
   } catch (error) {
     await client.query('ROLLBACK');
     console.error('Error creating livraison:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   } finally {
     client.release();
   }
@@ -62,27 +76,28 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    
-    const updateFields = ['status = $1', 'updated_at = CURRENT_TIMESTAMP'];
-    const values = [status];
-    
-    if (status === 'completed') {
-      updateFields.push('completed_at = CURRENT_TIMESTAMP');
+
+    if (!status) {
+      return res.status(400).json({ error: 'Statut requis' });
     }
-    
-    const result = await pool.query(
-      `UPDATE livraisons SET ${updateFields.join(', ')} WHERE id = $${values.length + 1} RETURNING *`,
-      [...values, id]
-    );
-    
+
+    let query;
+    if (status === 'completed') {
+      query = 'UPDATE livraisons SET status = $1, updated_at = CURRENT_TIMESTAMP, completed_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *';
+    } else {
+      query = 'UPDATE livraisons SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *';
+    }
+
+    const result = await pool.query(query, [status, id]);
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Livraison not found' });
     }
-    
+
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Error updating livraison:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 
