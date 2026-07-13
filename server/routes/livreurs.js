@@ -23,16 +23,17 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { name, phone, email, depotId } = req.body;
+    const safeDepotId = depotId && depotId.trim() !== '' ? depotId : null;
     
     const result = await pool.query(
       'INSERT INTO livreurs (name, phone, email, depot_id) VALUES ($1, $2, $3, $4) RETURNING *',
-      [name, phone, email, depotId]
+      [name, phone, email, safeDepotId]
     );
     
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error creating livreur:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 
@@ -41,10 +42,11 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { name, phone, email, depotId, isActive } = req.body;
+    const safeDepotId = depotId && depotId.trim() !== '' ? depotId : null;
     
     const result = await pool.query(
       'UPDATE livreurs SET name = $1, phone = $2, email = $3, depot_id = $4, is_active = $5, updated_at = CURRENT_TIMESTAMP WHERE id = $6 RETURNING *',
-      [name, phone, email, depotId, isActive, id]
+      [name, phone, email, safeDepotId, isActive, id]
     );
     
     if (result.rows.length === 0) {
@@ -54,7 +56,7 @@ router.put('/:id', async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Error updating livreur:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 

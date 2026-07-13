@@ -45,16 +45,17 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { name, fournisseurId, unit, prixAchat, prixVente, seuilStock } = req.body;
+    const safeFournisseurId = fournisseurId && fournisseurId.trim() !== '' ? fournisseurId : null;
     
     const result = await pool.query(
       'INSERT INTO products (name, fournisseur_id, unit, prix_achat, prix_vente, seuil_stock) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [name, fournisseurId, unit, prixAchat, prixVente, seuilStock]
+      [name, safeFournisseurId, unit, prixAchat, prixVente, seuilStock]
     );
     
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error creating product:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 
@@ -63,10 +64,11 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { name, fournisseurId, unit, prixAchat, prixVente, seuilStock, isActive } = req.body;
+    const safeFournisseurId = fournisseurId && fournisseurId.trim() !== '' ? fournisseurId : null;
     
     const result = await pool.query(
       'UPDATE products SET name = $1, fournisseur_id = $2, unit = $3, prix_achat = $4, prix_vente = $5, seuil_stock = $6, is_active = $7, updated_at = CURRENT_TIMESTAMP WHERE id = $8 RETURNING *',
-      [name, fournisseurId, unit, prixAchat, prixVente, seuilStock, isActive, id]
+      [name, safeFournisseurId, unit, prixAchat, prixVente, seuilStock, isActive, id]
     );
     
     if (result.rows.length === 0) {
@@ -76,7 +78,7 @@ router.put('/:id', async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Error updating product:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 

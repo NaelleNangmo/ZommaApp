@@ -46,22 +46,23 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { email, password, name, role, depotId } = req.body;
+    const safeDepotId = depotId && depotId.trim() !== '' ? depotId : null;
     
     // Hash password
     const passwordHash = await bcrypt.hash(password, 10);
     
     const result = await pool.query(
       'INSERT INTO users (email, password_hash, name, role, depot_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, name, role, depot_id, is_active, created_at',
-      [email, passwordHash, name, role, depotId]
+      [email, passwordHash, name, role, safeDepotId]
     );
     
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error creating user:', error);
-    if (error.code === '23505') { // Unique violation
+    if (error.code === '23505') {
       res.status(400).json({ error: 'Email already exists' });
     } else {
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: error.message || 'Internal server error' });
     }
   }
 });
@@ -71,10 +72,11 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { email, name, role, depotId, isActive } = req.body;
+    const safeDepotId = depotId && depotId.trim() !== '' ? depotId : null;
     
     const result = await pool.query(
       'UPDATE users SET email = $1, name = $2, role = $3, depot_id = $4, is_active = $5, updated_at = CURRENT_TIMESTAMP WHERE id = $6 RETURNING id, email, name, role, depot_id, is_active, created_at',
-      [email, name, role, depotId, isActive, id]
+      [email, name, role, safeDepotId, isActive, id]
     );
     
     if (result.rows.length === 0) {
@@ -84,7 +86,7 @@ router.put('/:id', async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Error updating user:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 
